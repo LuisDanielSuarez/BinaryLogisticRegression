@@ -31,10 +31,19 @@ class BinaryLogReg:
         self.intercept = b
 
     def predict_proba(self, test):
-        return sigma(self.intercept + np.dot(test, self.coefs.T))
+        try:
+            return sigma(self.intercept + np.dot(test, self.coefs.T))
+        except AttributeError as atr_err:
+            raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
     def predict(self, test):
-        return 1 * (sigma(self.intercept + np.dot(test, self.coefs.T)) > self.threshold)
+        try:
+            return 1 * (sigma(self.intercept + np.dot(test, self.coefs.T)) > self.threshold)
+        except AttributeError as atr_err:
+            raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
     def get_model(self):
-        return {'intercept': self.intercept, 'coefficients': list(self.coefs)}
+        try:
+            return {'intercept': self.intercept, 'coefficients': list(self.coefs)}
+        except AttributeError as atr_err:
+            raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
