@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def sigma(z):
+def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
@@ -21,7 +21,7 @@ class BinaryLogReg:
         b = 0
         for i in range(self.iterations):
             z = np.dot(X_train, w.T) + b
-            a = sigma(z)
+            a = sigmoid(z)
             dz = a - y_train
             dw = 1/m * np.dot(dz.T, X_train)
             db = 1/m * np.sum(dz)
@@ -32,13 +32,13 @@ class BinaryLogReg:
 
     def predict_proba(self, test):
         try:
-            return sigma(self.intercept + np.dot(test, self.coefs.T))
+            return sigmoid(self.intercept + np.dot(test, self.coefs.T))
         except AttributeError as atr_err:
             raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
     def predict(self, test):
         try:
-            return 1 * (sigma(self.intercept + np.dot(test, self.coefs.T)) > self.threshold)
+            return 1 * (sigmoid(self.intercept + np.dot(test, self.coefs.T)) > self.threshold)
         except AttributeError as atr_err:
             raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
