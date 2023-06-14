@@ -15,10 +15,13 @@ def get_cost(weights, intercept, X, y):
 
 class BinaryLogReg:
 
-    def __init__(self, alpha=0.01, iterations=700, threshold=0.5, tol=0.0001, max_iter=10000):
+    def __init__(self, alpha=0.01, iterations=700, threshold=0.5, tol=0.0001, max_iter=10000, verbose=False):
         self.alpha = alpha
         self.threshold = threshold
         self.iterations = iterations
+        self.max_iter = max_iter
+        self.costs = np.array([])
+        self.verbose = verbose
 
     # TODO Add possibility of iterating based on tolerance and max_iter
     # TODO check functionality with pandas Series and DataFrame
@@ -33,8 +36,16 @@ class BinaryLogReg:
             dz = a - y_train
             dw = 1/m * np.dot(dz.T, X_train)
             db = 1/m * np.sum(dz)
+            cost = get_cost(w, b, X_train, y_train)
             w = w - self.alpha * dw
             b = b - self.alpha * db
+
+            if i % 50 == 0:
+                self.costs = np.append(self.costs, cost)
+                if self.verbose:
+                    max_iter_digits = int(np.log10(self.max_iter)) + 1
+                    print(f'iteration {i:{max_iter_digits}g}, cost: {cost:.4f}')
+
         self.coefs = w
         self.intercept = b
 
