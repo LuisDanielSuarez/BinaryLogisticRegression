@@ -9,7 +9,8 @@ def _make_predictions(weights, intercept, X):
 
 def get_cost(weights, intercept, X, y):
     pred_proba = _make_predictions(weights, intercept, X)
-    return -1/X.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
+    cost = -1/X.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
+    return np.squeeze(cost)
 
 
 class BinaryLogReg:
