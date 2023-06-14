@@ -8,7 +8,7 @@ def _make_predictions(weights, intercept, X):
     return sigmoid(intercept + np.dot(X, weights.T))
 
 def get_cost(weights, intercept, X, y):
-    pred_proba = sigmoid(intercept + np.dot(X, weights.T))
+    pred_proba = _make_predictions(weights, intercept, X)
     return -1/X.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
 
 
@@ -39,7 +39,7 @@ class BinaryLogReg:
 
     def predict_proba(self, test):
         try:
-            return sigmoid(self.intercept + np.dot(test, self.coefs.T))
+            return _make_predictions(self.coefs, self.intercept, test)
         except AttributeError as atr_err:
             raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
