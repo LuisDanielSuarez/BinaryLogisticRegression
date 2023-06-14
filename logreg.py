@@ -4,6 +4,8 @@ import numpy as np
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
+def _make_predictions(weights, intercept, X):
+    return sigmoid(intercept + np.dot(X, weights.T))
 
 def get_cost(weights, intercept, X, y):
     pred_proba = sigmoid(intercept + np.dot(X, weights.T))
