@@ -4,12 +4,14 @@ import numpy as np
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
-def _make_predictions(weights, intercept, X):
-    return sigmoid(intercept + np.dot(X, weights.T))
 
-def get_cost(weights, intercept, X, y):
-    pred_proba = _make_predictions(weights, intercept, X)
-    cost = -1/X.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
+def _make_predictions(weights, intercept, x):
+    return sigmoid(intercept + np.dot(x, weights.T))
+
+
+def get_cost(weights, intercept, x, y):
+    pred_proba = _make_predictions(weights, intercept, x)
+    cost = -1/x.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
     return np.squeeze(cost)
 
 
@@ -25,18 +27,18 @@ class BinaryLogReg:
 
     # TODO Add possibility of iterating based on tolerance and max_iter
     # TODO check functionality with pandas Series and DataFrame
-    def fit(self, X_train, y_train):
+    def fit(self, x_train, y_train):
         y_train = y_train.reshape((y_train.shape[0], 1))
-        m = X_train.shape[0]
-        w = np.zeros(X_train.shape[1]).reshape((1, X_train.shape[1]))
+        m = x_train.shape[0]
+        w = np.zeros(x_train.shape[1]).reshape((1, x_train.shape[1]))
         b = 0
         for i in range(self.iterations):
-            z = np.dot(X_train, w.T) + b
+            z = np.dot(x_train, w.T) + b
             a = sigmoid(z)
             dz = a - y_train
-            dw = 1/m * np.dot(dz.T, X_train)
+            dw = 1/m * np.dot(dz.T, x_train)
             db = 1/m * np.sum(dz)
-            cost = get_cost(w, b, X_train, y_train)
+            cost = get_cost(w, b, x_train, y_train)
             w = w - self.alpha * dw
             b = b - self.alpha * db
 
