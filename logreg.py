@@ -33,9 +33,8 @@ class BinaryLogReg:
         w = np.zeros(x_train.shape[1]).reshape((1, x_train.shape[1]))
         b = 0
         for i in range(self.iterations):
-            z = np.dot(x_train, w.T) + b
-            a = sigmoid(z)
-            dz = a - y_train
+            out = _make_predictions(w, b, x_train)
+            dz = out - y_train
             dw = 1/m * np.dot(dz.T, x_train)
             db = 1/m * np.sum(dz)
             cost = get_cost(w, b, x_train, y_train)
