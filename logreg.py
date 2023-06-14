@@ -5,6 +5,11 @@ def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 
+def get_cost(weights, intercept, X, y):
+    pred_proba = sigmoid(intercept + np.dot(X, weights.T))
+    return -1/X.shape[0] * sum(y * np.log(pred_proba) + (1 - y) * np.log(1 - pred_proba))
+
+
 class BinaryLogReg:
 
     def __init__(self, alpha=0.01, iterations=700, threshold=0.5, tol=0.0001, max_iter=10000):
