@@ -45,7 +45,7 @@ class BinaryLogReg:
 
     def predict(self, test):
         try:
-            return 1 * (sigmoid(self.intercept + np.dot(test, self.coefs.T)) > self.threshold)
+            return 1 * (self.predict_proba(test) > self.threshold)
         except AttributeError as atr_err:
             raise RuntimeError("Model wasn't fitted, maybe you want to run .fit() method before?") from atr_err
 
